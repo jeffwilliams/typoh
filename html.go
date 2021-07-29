@@ -6,6 +6,25 @@ import (
 	"io"
 )
 
+type Toker interface {
+	// Next returns io.EOF when done. It may also return a token at the same time.
+	Next() (token *Token, err error)
+}
+
+type Token struct {
+	index uint
+	typ   TokenType
+	text  string
+}
+type TokenType int
+
+const (
+	// TokMetadata are things that are not body text and so should not be formatted: HTML tags.
+	TokMetadata = iota
+	// TokContent is actual content
+	TokContent
+)
+
 type HtmlToker struct {
 	rdr   *bufio.Reader
 	inTag bool

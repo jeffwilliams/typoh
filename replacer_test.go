@@ -75,6 +75,24 @@ func TestReplacer(t *testing.T) {
 			},
 			output: "match ayx",
 		},
+		{
+			name:  "short matches when long in progress",
+			input: "test12",
+			replacements: [][]string{
+				[]string{"13", "x"},
+				[]string{"2", "y"},
+			},
+			output: "test1y",
+		},
+		{
+			name:  "prefer first added match",
+			input: "abc",
+			replacements: [][]string{
+				[]string{"b", "x"},
+				[]string{"b", "y"},
+			},
+			output: "axc",
+		},
 	}
 
 	for _, tc := range tests {
