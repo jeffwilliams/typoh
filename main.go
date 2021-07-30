@@ -21,7 +21,8 @@ Replacements:
 	'' = right curlies
 	\ = escape the next character/token
 	... = ellipses
-	~ = nonbreaking space?
+	_ = nonbreaking space
+	~ = optional hyphen? or _ See unicode: https://www.compart.com/en/unicode/U+00A0
 
 Also figure out where a non-breaking space should go? Single underscore, with no space on each side only a non-_ letter?
 */
@@ -80,6 +81,8 @@ func (t *Typographer) firstPassReplacer() *Replacer {
 	r.Add("''", "”")
 	r.Add("...", "…")
 	r.Add(`\.`, ".")
+	r.Add("_", " ")
+	r.Add("~", "­")
 
 	return r
 }
