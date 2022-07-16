@@ -34,20 +34,27 @@ as implemented here: https://github.com/speedata/hyphenation
 
 func main() {
 	pflag.Parse()
-	if pflag.NArg() < 1 {
-		fmt.Printf("Usage: typoh <file>\n")
+
+	input, err := inputStream()
+	if err != nil {
 		return
+	}
+
+	var typo Typographer
+	typo.ReplaceMarkers(input, os.Stdout)
+}
+
+func inputStream() (io.Reader, error) {
+	if pflag.NArg() < 1 {
+		return os.Stdin, nil
 	}
 
 	fname := pflag.Arg(0)
 	file, err := os.Open(fname)
 	if err != nil {
-		fmt.Printf("Error opening %s: %v\n", fname, err)
-		return
+		return nil, fmt.Errorf("Error opening %s: %v\n", fname, err)
 	}
-
-	var typo Typographer
-	typo.ReplaceMarkers(file, os.Stdout)
+	return file, nil
 }
 
 type Typographer struct {
