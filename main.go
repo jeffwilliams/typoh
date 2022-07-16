@@ -23,6 +23,7 @@ Replacements:
 	... = ellipses
 	_ = nonbreaking space
 	~ = optional hyphen? or _ See unicode: https://www.compart.com/en/unicode/U+00A0
+	=> = bullet
 
 Also figure out where a non-breaking space should go? Single underscore, with no space on each side only a non-_ letter?
 */
@@ -90,7 +91,11 @@ func (t *Typographer) firstPassReplacer() *Replacer {
 	r.Add(`\.`, ".")
 	r.Add("_", " ")
 	r.Add("~", "­")
-
+	r.Add("=>", "•")
+	r.Add("1/2", "½")
+	r.Add("1/4", "¼")
+	r.Add("3/4", "¾")
+	
 	return r
 }
 
