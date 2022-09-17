@@ -24,6 +24,12 @@ Replacements:
 	_ = nonbreaking space
 	~ = optional hyphen? or _ See unicode: https://www.compart.com/en/unicode/U+00A0
 	=> = bullet
+	1/2 = 1/2 symbol
+	1/4 = 1/4 symbol
+	3/4 = 3/4 symbol
+	^N = superscript N, where N is a digit between 0-9 inclusive
+	_N = subscript N, where N is a digit between 0-9 inclusive
+	N^o = №
 
 Also figure out where a non-breaking space should go? Single underscore, with no space on each side only a non-_ letter?
 */
@@ -92,9 +98,30 @@ func (t *Typographer) firstPassReplacer() *Replacer {
 	r.Add("_", " ")
 	r.Add("~", "­")
 	r.Add("=>", "•")
+	r.Add("N^o", "№")
 	r.Add("1/2", "½")
 	r.Add("1/4", "¼")
 	r.Add("3/4", "¾")
+	r.Add("^0", "⁰")
+	r.Add("^1", "¹")
+	r.Add("^2", "²")
+	r.Add("^3", "³")
+	r.Add("^4", "⁴")
+	r.Add("^5", "⁵")
+	r.Add("^6", "⁶")
+	r.Add("^7", "⁷")
+	r.Add("^8", "⁸")
+	r.Add("^9", "⁹")
+	r.Add("_0", "₀")
+	r.Add("_1", "₁")
+	r.Add("_2", "₂")
+	r.Add("_3", "₃")
+	r.Add("_4", "₄")
+	r.Add("_5", "₅")
+	r.Add("_6", "₆")
+	r.Add("_7", "₇")
+	r.Add("_8", "₈")
+	r.Add("_9", "₉")
 	
 	return r
 }
