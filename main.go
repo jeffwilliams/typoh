@@ -39,7 +39,54 @@ Can use Butterick's idea of adding HTML soft hyphens to text using Liang's hyphe
 as implemented here: https://github.com/speedata/hyphenation
 */
 
+var (
+	firstPassReplacements = []Replacement{
+		{"---", "—"},
+		{`\-`, "-"},
+		{"``", "“"},
+		{"''", "”"},
+		{"...", "…"},
+		{`\.`, "."},
+		{"~", "­"},
+		{"=>", "•"},
+		{"N^o", "№"},
+		{"1/2", "½"},
+		{"1/4", "¼"},
+		{"3/4", "¾"},
+		{"^0", "⁰"},
+		{"^1", "¹"},
+		{"^2", "²"},
+		{"^3", "³"},
+		{"^4", "⁴"},
+		{"^5", "⁵"},
+		{"^6", "⁶"},
+		{"^7", "⁷"},
+		{"^8", "⁸"},
+		{"^9", "⁹"},
+		{"_0", "₀"},
+		{"_1", "₁"},
+		{"_2", "₂"},
+		{"_3", "₃"},
+		{"_4", "₄"},
+		{"_5", "₅"},
+		{"_6", "₆"},
+		{"_7", "₇"},
+		{"_8", "₈"},
+		{"_9", "₉"},
+	}
+
+	secondPassReplacements = []Replacement{
+		{"_", " "},
+		{`\'`, "'"},
+		{"--", "–"},
+		{"`", "‘"},
+		{"\\`", "`"},
+		{"'", "’"},
+	}
+)
+
 func main() {
+	pflag.Usage = usage
 	pflag.Parse()
 
 	input, err := inputStream()
@@ -89,51 +136,19 @@ func (t *Typographer) initReplacers() {
 func (t *Typographer) firstPassReplacer() *Replacer {
 	r := &Replacer{}
 
-	r.Add("---", "—")
-	r.Add(`\-`, "-")
-	r.Add("``", "“")
-	r.Add("''", "”")
-	r.Add("...", "…")
-	r.Add(`\.`, ".")
-	r.Add("_", " ")
-	r.Add("~", "­")
-	r.Add("=>", "•")
-	r.Add("N^o", "№")
-	r.Add("1/2", "½")
-	r.Add("1/4", "¼")
-	r.Add("3/4", "¾")
-	r.Add("^0", "⁰")
-	r.Add("^1", "¹")
-	r.Add("^2", "²")
-	r.Add("^3", "³")
-	r.Add("^4", "⁴")
-	r.Add("^5", "⁵")
-	r.Add("^6", "⁶")
-	r.Add("^7", "⁷")
-	r.Add("^8", "⁸")
-	r.Add("^9", "⁹")
-	r.Add("_0", "₀")
-	r.Add("_1", "₁")
-	r.Add("_2", "₂")
-	r.Add("_3", "₃")
-	r.Add("_4", "₄")
-	r.Add("_5", "₅")
-	r.Add("_6", "₆")
-	r.Add("_7", "₇")
-	r.Add("_8", "₈")
-	r.Add("_9", "₉")
-	
+	for _, repl := range firstPassReplacements {
+		r.Add(repl.from, repl.to)
+	}
+
 	return r
 }
 
 func (t *Typographer) secondPassReplacer() *Replacer {
 	r := &Replacer{}
 
-	r.Add(`\'`, "'")
-	r.Add("--", "–")
-	r.Add("`", "‘")
-	r.Add("\\`", "`")
-	r.Add("'", "’")
+	for _, repl := range secondPassReplacements {
+		r.Add(repl.from, repl.to)
+	}
 
 	return r
 }
@@ -169,3 +184,20 @@ func (t *Typographer) replaceMarkersIn(tok *Token) {
 		}
 	}
 }
+
+type Replacement struct {
+	from, to string
+}
+
+func usage() {
+	fmt.Fprintf(os.Stderr, "Usage: %s < <file>\n\n", os.Args[0])
+	fmt.Fprintf(os.Stderr, "Substitutions: \n")
+	for _, repl := range firstPassReplacements {
+		fmt.Fprintf(os.Stderr, "  %s --> %s\n", repl.from, repl.to)
+	}
+	for _, repl := range secondPassReplacements {
+		fmt.Fprintf(os.Stderr, "  %s --> %s\n", repl.from, repl.to)
+	}
+	//pflag.PrintDefaults()
+}
+
