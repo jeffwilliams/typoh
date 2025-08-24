@@ -27,6 +27,8 @@ Replacements:
 	1/2 = 1/2 symbol
 	1/4 = 1/4 symbol
 	3/4 = 3/4 symbol
+	1/3 = 1/3 symbol
+	2/3 = 2/3 symbol
 	^N = superscript N, where N is a digit between 0-9 inclusive
 	_N = subscript N, where N is a digit between 0-9 inclusive
 	N^o = №
@@ -53,6 +55,8 @@ var (
 		{"1/2", "½"},
 		{"1/4", "¼"},
 		{"3/4", "¾"},
+		{"1/3", "⅓"},
+		{"2/3", "⅔"},
 		{"^0", "⁰"},
 		{"^1", "¹"},
 		{"^2", "²"},
@@ -200,4 +204,3 @@ func usage() {
 	}
 	//pflag.PrintDefaults()
 }
-
