@@ -1,18 +1,8 @@
-package main
-
-import (
-	"fmt"
-	"io"
-	"os"
-
-	"github.com/spf13/pflag"
-)
-
 /*
 typoh: Typography for HTML. Or a typo.
-*/
-/*
+
 Replacements:
+
 	-- = endash
 	--- = emdash
 	` = left curly
@@ -32,9 +22,21 @@ Replacements:
 	^N = superscript N, where N is a digit between 0-9 inclusive
 	_N = subscript N, where N is a digit between 0-9 inclusive
 	N^o = №
+	:check: = "✓"
+	:rightarrow: = →  (and also left, up, down)
+	:mult: = "×"
 
-Also figure out where a non-breaking space should go? Single underscore, with no space on each side only a non-_ letter?
 */
+package main
+
+import (
+	"fmt"
+	"io"
+	"os"
+
+	"github.com/spf13/pflag"
+)
+
 
 /*
 Can use Butterick's idea of adding HTML soft hyphens to text using Liang's hyphenation algorithm from TeX
@@ -77,6 +79,12 @@ var (
 		{"_7", "₇"},
 		{"_8", "₈"},
 		{"_9", "₉"},
+		{":check:", "✓"},
+		{":rightarrow:", "→"},
+		{":leftarrow:", "←"},
+		{":uparrow:", "↑"},
+		{":downarrow:", "↓"},
+		{":mult:", "×"},
 	}
 
 	secondPassReplacements = []Replacement{
